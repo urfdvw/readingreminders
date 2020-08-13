@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+    <!-- <textarea id="copy" onclick="copy()"> 
+        这个网页的功能是
+        每天生成当天的读经计划提示信息
+            包括当天的经文
+            经文的链接（instantbible.org）
+        并且有一个按键一键复制所有信息并发通知
+        可以设置的参数包括
+            开始日期
+            开始的书卷
+
+        需要的数据
+            每一个书卷的题目
+            每一个书卷包含的章数
+            每一书卷的英文简写（用于生成经文地址）
+    
+    </textarea> -->
+
+    <script src="data.js"></script>
+    <script>
+        // 找到三类书的范围
+        var sz = [19, 20];
+        var ot = [];
+        for (var i = 1; i <= 39; i++) {
+            if (!(sz.includes(i))) {
+                ot.push(i);
+            }
+        }
+        var nt = [];
+        for (var i = 45; i <= 66; i++) {
+            nt.push(i);
+        }
+        for (var i = 40; i <= 44; i++) {
+            nt.push(i);
+        }
+
+        // 设置一个函数，输入是一个int和一个booklist
+        // 输出是对应的书卷名称和章节号
+        function get_chapter(books, n) {
+            var n = n;
+            var found = false;
+            while (true) {
+                var nbook = 0;
+                for (var i = 0; i < books.length; i++) {
+                    if (n > data[books[i]]["len"]) {
+                        nbook += 1;
+                        n -= data[books[i]]["len"];
+                    } else {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    break;
+                }
+            }
+            return [books[nbook], n];
+        };
+
+        // 计算两个日期之间相差的天数
+
+        var date_diff_indays = function (date1, date2) {
+            dt1 = new Date(date1);
+            dt2 = new Date(date2);
+            return Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24));
+        }
+
+        // 生成显示内容
+
+        var start = "08/08/2020";
+        var ndays = date_diff_indays(start, Date());
+        // ndays = 95;
+        var text = "";
+
+        // 前言
+        var line = "今天的读经计划是\n"
+
+        var dom = document.createElement("H1");
+        dom.innerHTML = line;
+        document.body.appendChild(dom);
+
+        text += line;
+
+        //  诗篇箴言
+        var bc = get_chapter(sz, ndays);
+        var line = data[bc[0]]['name'] + bc[1];
+        var url = "https://www.instantbible.org/#/bible/version/cuvs/book/" + data[bc[0]]['url'] + "/chapter/" + bc[1];
+
+        var dom = document.createElement("a");
+        dom.innerHTML = line;
+        dom.href = url;
+        dom.target = "_blank";
+        document.body.appendChild(dom);
+        var dom = document.createElement("br");
+        document.body.appendChild(dom);
+
+        text += line;
+
+        text += "\n";
+        text += url;
+        text += "\n";
+
+        //  新约
+        var bc = get_chapter(nt, ndays);
+        var line = data[bc[0]]['name'] + bc[1];
+        var url = "https://www.instantbible.org/#/bible/version/cuvs/book/" + data[bc[0]]['url'] + "/chapter/" + bc[1];
+
+        var dom = document.createElement("a");
+        dom.innerHTML = line;
+        dom.href = url;
+        dom.target = "_blank";
+        document.body.appendChild(dom);
+        var dom = document.createElement("br");
+        document.body.appendChild(dom);
+
+        text += line;
+
+        text += "\n";
+        text += url;
+        text += "\n";
+
+        // 旧约
+
+        var bc1 = get_chapter(ot, ndays * 2 - 1);
+        var bc2 = get_chapter(ot, ndays * 2);
+        if (bc1[0] == bc2[0]) {
+
+            var line = data[bc1[0]]['name'] + bc1[1] + "到" + bc2[1];
+            var url = "https://www.instantbible.org/#/bible/version/cuvs/book/" + data[bc1[0]]['url'] + "/chapter/" + bc1[1];
+
+            var dom = document.createElement("a");
+            dom.innerHTML = line;
+            dom.href = url;
+            dom.target = "_blank";
+            document.body.appendChild(dom);
+            var dom = document.createElement("br");
+            document.body.appendChild(dom);
+
+            text += line;
+
+            text += "\n";
+            text += url;
+            text += "\n";
+
+        } else {
+            var bc = bc1;
+
+            var line = data[bc[0]]['name'] + bc[1];
+            var url = "https://www.instantbible.org/#/bible/version/cuvs/book/" + data[bc[0]]['url'] + "/chapter/" + bc[1];
+
+            var dom = document.createElement("a");
+            dom.innerHTML = line;
+            dom.href = url;
+            dom.target = "_blank";
+            document.body.appendChild(dom);
+            var dom = document.createElement("br");
+            document.body.appendChild(dom);
+
+            text += line;
+
+            text += "\n";
+            text += url;
+            text += "\n";
+
+            var bc = bc2;
+
+            var line = data[bc[0]]['name'] + bc[1];
+            var url = "https://www.instantbible.org/#/bible/version/cuvs/book/" + data[bc[0]]['url'] + "/chapter/" + bc[1];
+
+            var dom = document.createElement("a");
+            dom.innerHTML = line;
+            dom.href = url;
+            dom.target = "_blank";
+            document.body.appendChild(dom);
+            var dom = document.createElement("br");
+            document.body.appendChild(dom);
+
+            text += line;
+
+            text += "\n";
+            text += url;
+            text += "\n";
+
+        }
+        console.log(text);
+
+        // 复制按键
+        const copyToClipboard = str => {
+            const el = document.createElement('textarea');
+            el.value = str;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+        };
+
+        function func() {
+            copyToClipboard(text);
+        }
+
+        var button = document.createElement("input");
+        button.type = "button";
+        button.value = "复制信息";
+        button.onclick = func;
+        document.body.appendChild(button);
+
+
+    </script>
+</body>
+
+</html>
