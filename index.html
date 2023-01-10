@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 </head>
 
 <body>
@@ -21,6 +22,8 @@
             每一书卷的英文简写（用于生成经文地址）
     
     </textarea> -->
+
+
 
     <script src="data.js"></script>
     <script>
@@ -82,6 +85,7 @@
         var line = "今天的读经计划是\n"
 
         var dom = document.createElement("H1");
+        dom.classList.add('title');
         dom.innerHTML = line;
         document.body.appendChild(dom);
 
@@ -179,7 +183,7 @@
             dom.target = "_blank";
             document.body.appendChild(dom);
             var dom = document.createElement("br");
-            document.body.appendChild(dom);
+            document.body.appendChild(document.createElement("br"));
 
             text += line;
 
@@ -200,17 +204,14 @@
             document.body.removeChild(el);
         };
 
-        function func() {
+        var button = document.createElement("button");
+        button.classList.add('button');
+        button.classList.add('is-primary');
+        button.innerHTML = "复制信息";
+        button.onclick = function () {
             copyToClipboard(text);
-        }
-
-        var button = document.createElement("input");
-        button.type = "button";
-        button.value = "复制信息";
-        button.onclick = func;
+        };
         document.body.appendChild(button);
-
-
     </script>
 </body>
 
