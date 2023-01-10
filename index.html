@@ -22,8 +22,10 @@
             每一书卷的英文简写（用于生成经文地址）
     
     </textarea> -->
-
-
+    <section class="section">
+        <div class="container" id="main">
+        </div>
+    </section>
 
     <script src="data.js"></script>
     <script>
@@ -87,7 +89,7 @@
         var dom = document.createElement("H1");
         dom.classList.add('title');
         dom.innerHTML = line;
-        document.body.appendChild(dom);
+        main.appendChild(dom);
 
         text += line;
 
@@ -100,9 +102,9 @@
         dom.innerHTML = line;
         dom.href = url;
         dom.target = "_blank";
-        document.body.appendChild(dom);
+        main.appendChild(dom);
         var dom = document.createElement("br");
-        document.body.appendChild(dom);
+        main.appendChild(dom);
 
         text += line;
 
@@ -119,9 +121,9 @@
         dom.innerHTML = line;
         dom.href = url;
         dom.target = "_blank";
-        document.body.appendChild(dom);
+        main.appendChild(dom);
         var dom = document.createElement("br");
-        document.body.appendChild(dom);
+        main.appendChild(dom);
 
         text += line;
 
@@ -142,9 +144,9 @@
             dom.innerHTML = line;
             dom.href = url;
             dom.target = "_blank";
-            document.body.appendChild(dom);
+            main.appendChild(dom);
             var dom = document.createElement("br");
-            document.body.appendChild(dom);
+            main.appendChild(dom);
 
             text += line;
 
@@ -162,9 +164,9 @@
             dom.innerHTML = line;
             dom.href = url;
             dom.target = "_blank";
-            document.body.appendChild(dom);
+            main.appendChild(dom);
             var dom = document.createElement("br");
-            document.body.appendChild(dom);
+            main.appendChild(dom);
 
             text += line;
 
@@ -181,9 +183,9 @@
             dom.innerHTML = line;
             dom.href = url;
             dom.target = "_blank";
-            document.body.appendChild(dom);
+            main.appendChild(dom);
             var dom = document.createElement("br");
-            document.body.appendChild(document.createElement("br"));
+            main.appendChild(document.createElement("br"));
 
             text += line;
 
@@ -198,10 +200,10 @@
         const copyToClipboard = str => {
             const el = document.createElement('textarea');
             el.value = str;
-            document.body.appendChild(el);
+            main.appendChild(el);
             el.select();
             document.execCommand('copy');
-            document.body.removeChild(el);
+            main.removeChild(el);
         };
 
         var button = document.createElement("button");
@@ -211,7 +213,7 @@
         button.onclick = function () {
             copyToClipboard(text);
         };
-        document.body.appendChild(button);
+        main.appendChild(button);
     </script>
 </body>
 
